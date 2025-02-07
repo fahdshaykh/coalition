@@ -79,9 +79,9 @@
                             
                             rows += `
                                 <tr>
-                                    <td>${row.product_name}</td>
-                                    <td>${row.quantity}</td>
-                                    <td>${row.price}</td>
+                                    <td><input type="text" class="form-control" value="${row.product_name}"/></td>
+                                    <td><input type="number" class="form-control" value="${row.quantity}"/></td>
+                                    <td><input type="number" class="form-control" value="${row.price}"/></td>
                                     <td>${row.total_value}</td>
                                     <td>${row.created_at}</td>
                                 </tr>
