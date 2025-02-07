@@ -13,7 +13,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Storage::exists('products.json') ? json_decode(Storage::get('products.json'), true) : [];
+        $products = $this->products();
+        
         return view('products.index', compact('products'));
     }
 
@@ -47,7 +48,7 @@ class ProductController extends Controller
             'updated_at' => $datetime,
         ];
 
-        $json = Storage::exists('products.json') ? json_decode(Storage::get('products.json'), true) : [];
+        $json = $this->products();
 
         $json[] = $product;
         $jsonData = json_encode($json, JSON_PRETTY_PRINT);
@@ -62,7 +63,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return response()->json(['data' => $this->products()]);
     }
 
     /**
@@ -88,4 +89,15 @@ class ProductController extends Controller
     {
         //
     }
+
+    public function products()
+    {
+        return Storage::exists('products.json')? json_decode(Storage::get('products.json'), true) : [];
+    }
+
+    public function fetch()
+    {
+        return response()->json(['data' => $this->products()]);
+    }
+
 }

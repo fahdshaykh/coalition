@@ -17,15 +17,15 @@
         <form id="productForm">
             <div class="form-group">
                 <label for="product_name">Product Name</label>
-                <input type="text" id="product_name" name="product_name" class="form-control">
+                <input type="text" id="product_name" name="product_name" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="quantity">Stock Quantity</label>
-                <input type="number" id="quantity" name="quantity" class="form-control">
+                <input type="number" id="quantity" name="quantity" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="price">Item Price</label>
-                <input type="number" id="price" name="price" class="form-control">
+                <input type="number" id="price" name="price" class="form-control" required>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
@@ -38,16 +38,11 @@
                     <th>Product Name</th>
                     <th>Stock Quantity</th>
                     <th>Price</th>
+                    <th>Created at</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach ($products as $product)
-                    <tr>
-                        <td>{{ $product['product_name'] }}</td>
-                        <td>{{ $product['quantity'] }}</td>
-                        <td>{{ $product['price'] }}</td>
-                    </tr>
-                @endforeach
+            <tbody class="table" id="productTable">
+                
             </tbody>
         </table>
 
@@ -58,12 +53,42 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
+
+            function fetchProducts() {
+            
+                $.ajax({
+                    url: "{{ url('fetch') }}", 
+                    type: 'GET', 
+                    dataType: 'json',
+                    success: function(response) {
+                        let rows = '';
+
+                        response.data.forEach(function(row) {
+                            
+                            rows += `
+                                <tr>
+                                    <td>${row.product_name}</td>
+                                    <td>${row.quantity}</td>
+                                    <td>${row.price}</td>
+                                    <td>${row.created_at}</td>
+                                </tr>
+                            `;
+                        });
+
+                        $("#productTable").html(rows);
+
+                    }
+                });
+
+            }
+
             $("#productForm").submit(function(event) {
                 event.preventDefault();
 
                 var productName = $("#product_name").val();
                 var quantity = $("#quantity").val();
                 var price = $("#price").val();
+                // var created_at = new Date().toISOString().slice(0, 19).replace("T", " ");
 
                 $.ajax({
                     headers: {
@@ -78,6 +103,17 @@
                     },
                     success: function(response) {
                         alert("Product added successfully!");
+                        // $("#productTable").append(`
+                        //     <tr>
+                        //         <td>${productName}</td>
+                        //         <td>${quantity}</td>
+                        //         <td>${price}</td>
+                        //         <td>${created_at}</td>
+                        //     </tr>
+                        // `);
+
+                        fetchProducts();
+
                         $("#productForm")[0].reset();
                     },
                     error: function(error) {
@@ -85,6 +121,9 @@
                     }
                 });
             });
+
+            fetchProducts();
+
         });
     </script>
 </body>

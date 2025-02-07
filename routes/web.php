@@ -19,3 +19,5 @@ Route::get('/', function () {
 });
 
 Route::resource('products', ProductController::class);
+
+Route::get('/fetch', [ProductController::class, 'fetch'])->name('products.fetch');
