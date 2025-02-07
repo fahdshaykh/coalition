@@ -10,6 +10,8 @@
 <body>
     <div class="container">
 
+    <a href="/" class="btn btn-default mt-5">Home Page</a>
+
         <h1>View Products</h1>
         
         <form id="productForm">
@@ -27,6 +29,29 @@
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+
+
+        <h2>Products</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Stock Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($products as $product)
+                    <tr>
+                        <td>{{ $product['product_name'] }}</td>
+                        <td>{{ $product['quantity'] }}</td>
+                        <td>{{ $product['price'] }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        <script src="{{ asset('js/app.js') }}"></script>
 
     </div>
 

@@ -13,7 +13,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('products.index');
+        $products = Storage::exists('products.json') ? json_decode(Storage::get('products.json'), true) : [];
+        return view('products.index', compact('products'));
     }
 
     /**
