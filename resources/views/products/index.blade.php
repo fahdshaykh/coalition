@@ -38,12 +38,21 @@
                     <th>Product Name</th>
                     <th>Stock Quantity</th>
                     <th>Price</th>
+                    <th>Total Price</th>
                     <th>Created at</th>
                 </tr>
             </thead>
             <tbody class="table" id="productTable">
                 
             </tbody>
+
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-right">Total Price:</td>
+                    <td id="sumPrice"></td>
+                    <td></td>
+                </tr>
+            </tfoot>
         </table>
 
         <script src="{{ asset('js/app.js') }}"></script>
@@ -62,21 +71,25 @@
                     dataType: 'json',
                     success: function(response) {
                         let rows = '';
+                        let TotalPrice = 0;
 
                         response.data.forEach(function(row) {
+
+                            TotalPrice += row.total_value;
                             
                             rows += `
                                 <tr>
                                     <td>${row.product_name}</td>
                                     <td>${row.quantity}</td>
                                     <td>${row.price}</td>
+                                    <td>${row.total_value}</td>
                                     <td>${row.created_at}</td>
                                 </tr>
                             `;
                         });
 
                         $("#productTable").html(rows);
-
+                        $("#sumPrice").html(TotalPrice);
                     }
                 });
 
